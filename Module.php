@@ -1,36 +1,6 @@
 <?php
-namespace GoalioMailService;
-
-use Zend\Mvc\MvcEvent;
-
-class Module {
-
-    public function getConfig() {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
-    public function getAutoloaderConfig() {
-        return array(
-                'Zend\Loader\StandardAutoloader' => array(
-                        'namespaces' => array(
-                                __NAMESPACE__      => __DIR__ . '/src/' . __NAMESPACE__,
-                        ),
-                ),
-        );
-    }
-
-    public function getServiceConfig() {
-        return array(
-            'shared' => array(
-                 'goaliomailservice_message' => false
-            ),
-            'invokables' => array(
-                'goaliomailservice_message'   => 'GoalioMailService\Mail\Service\Message',
-            ),
-            'factories' => array(
-                'goaliomailservice_transport' => 'GoalioMailService\Mail\Transport\Service\TransportFactory',
-            ),
-        );
-    }
-}
-
+/**
+ * This file is placed here for compatibility with ZendFramework 2's ModuleManager.
+ * It allows usage of this module even without composer.
+ */
+require_once __DIR__ . '/src/GoalioI18n/Module.php';
