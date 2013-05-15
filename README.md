@@ -1,4 +1,4 @@
-GoalioRememberMe
+GoalioMailService
 ================
 
 Version 0.0.2 Created by the goalio UG (haftungsbeschränkt)
