@@ -71,3 +71,25 @@ Usage
 	$mailService = $this->getServiceManager()->get('goaliomailservice_message');
 	$message = $mailService->createTextMessage($from, $to, $subject, $viewTemplate, $values);	
 	$mailService->send($message);
+	
+SMTP Setup
+----------
+
+GoalioMailService uses sendmail by default, but you can set it up to use SMTP by putting your information in the config file like this:
+
+    $settings = array(
+        'transport_class' => 'Zend\Mail\Transport\Smtp',
+    
+        'options_class' => 'Zend\Mail\Transport\SmtpOptions',
+    
+        'options' => array(
+            'host' => 'smtp.gmail.com',
+            'connection_class' => 'login',
+            'connection_config' => array(
+                'ssl' => 'tls',
+                'username' => 'YOUR-USERNAME-HERE@gmail.com',
+                'password' => 'YOUR-PASSWORD-HERE'
+            ),
+            'port' => 587
+        )
+    );
