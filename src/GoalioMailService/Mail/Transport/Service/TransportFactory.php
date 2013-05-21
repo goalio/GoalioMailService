@@ -13,17 +13,19 @@ class TransportFactory implements FactoryInterface {
 
         $transportOptions = (isset($config['goaliomailservice']) ? $config['goaliomailservice'] : array());
 
-        if(!isset($transportOptions['transport_class'])) {
-            throw new Exception('Transport class has to be configured');
-        }
+        if(isset($transportOptions['transport_object'])) {
+            $transport = $serviceLocator->get($transportOptions['transport_object']);
+        } elseif (isset($transportOptions['transport_class'])) {
+            $transportClass = $transportOptions['transport_class'];
+            $transport = new $transportClass();
 
-        $transportClass = $transportOptions['transport_class'];
-        $transport = new $transportClass();
-
-        if(isset($transportOptions['options_class'])) {
-            $optionsClass = $transportOptions['options_class'];
-            $options = new $optionsClass($transportOptions['options']);
-            $transport->setOptions($options);
+            if(isset($transportOptions['options_class'])) {
+                $optionsClass = $transportOptions['options_class'];
+                $options = new $optionsClass($transportOptions['options']);
+                $transport->setOptions($options);
+            }
+        } else {
+            throw new Exception('Either transport class or transport object have to be configured');
         }
 
         return $transport;
