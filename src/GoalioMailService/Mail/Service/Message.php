@@ -95,7 +95,7 @@ class Message implements ServiceManagerAwareInterface {
         $renderer = $this->getRenderer();
         $content = $renderer->render($nameOrModel, $values);
 
-        return $this->getDefaultMessage($from, 'utf-8', $to, $subject, $content);
+        return $this->getDefaultMessage($from, 'UTF-8', $to, $subject, $content);
     }
 
     /**
