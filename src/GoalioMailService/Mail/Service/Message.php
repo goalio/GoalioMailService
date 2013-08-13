@@ -115,8 +115,8 @@ class Message implements ServiceManagerAwareInterface {
      */
     protected function getRenderer() {
         if($this->renderer === null) {
-            $this->renderer = $this->getServiceManager()
-                ->get('ViewRenderer');
+            $serviceManager = $this->getServiceManager();
+            $this->renderer = $serviceManager->get('goaliomailservice_renderer');
         }
 
         return $this->renderer;

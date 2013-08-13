@@ -31,6 +31,7 @@ class Module {
             ),
             'factories' => array(
                 'goaliomailservice_transport' => 'GoalioMailService\Mail\Transport\Service\TransportFactory',
+                'goaliomailservice_renderer'  => 'GoalioMailService\Mail\View\MailPhpRendererFactory',
             ),
         );
     }
