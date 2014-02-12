@@ -33,7 +33,7 @@ Installation
     }
     ```
 
-2. Now tell composer to download ZfcUser by running the command:
+2. Now tell composer to download `GoalioMailService` by running the command:
 
     ```bash
     $ php composer.phar update
