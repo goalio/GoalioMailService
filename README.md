@@ -29,11 +29,11 @@ Installation
 
     ```json
     "require": {
-        "goalio/goalio-mailservice": "dev-master"
+        "goalio/goalio-mailservice": "1.*"
     }
     ```
 
-2. Now tell composer to download ZfcUser by running the command:
+2. Now tell composer to download GoalioMailService by running the command:
 
     ```bash
     $ php composer.phar update
@@ -53,25 +53,25 @@ Installation
         // ...
     );
     ```
-2. Copy the configuration files for local and global from 
+2. Copy the configuration files for local and global from
 `./vendor/goalio/goalio-mailservice/config/goaliomailservice.{local,global}.php.dist` to
-`./config/autoload/goaliomailservice.{local,global}.php` and change the values as desired. 
+`./config/autoload/goaliomailservice.{local,global}.php` and change the values as desired.
 
-3. If you are using the FileTransport (for development) create the directory `./data/mail`. 
+3. If you are using the FileTransport (for development) create the directory `./data/mail`.
 
 Usage
 -----
 
 	// The template used by the PhpRenderer to create the content of the mail
 	$viewTemplate = 'module/email/testmail';
-	
+
 	// The ViewModel variables to pass into the renderer
 	$value = array('foo' => 'bar');
 
 	$mailService = $this->getServiceManager()->get('goaliomailservice_message');
-	$message = $mailService->createTextMessage($from, $to, $subject, $viewTemplate, $values);	
+	$message = $mailService->createTextMessage($from, $to, $subject, $viewTemplate, $values);
 	$mailService->send($message);
-	
+
 SMTP Setup
 ----------
 
@@ -79,9 +79,9 @@ GoalioMailService uses sendmail by default, but you can set it up to use SMTP by
 
     $settings = array(
         'transport_class' => 'Zend\Mail\Transport\Smtp',
-    
+
         'options_class' => 'Zend\Mail\Transport\SmtpOptions',
-    
+
         'options' => array(
             'host' => 'smtp.gmail.com',
             'connection_class' => 'login',

@@ -95,13 +95,13 @@ class Message implements ServiceManagerAwareInterface {
         $renderer = $this->getRenderer();
         $content = $renderer->render($nameOrModel, $values);
 
-        return $this->getDefaultMessage($from, 'UTF-8', $to, $subject, $content);
+        return $this->getDefaultMessage($from, 'utf-8', $to, $subject, $content);
     }
 
     /**
      * Send the message
      *
-     * @param Message $message
+     * @param MailMessage $message
      */
     public function send(MailMessage $message) {
         $this->getTransport()
@@ -113,7 +113,7 @@ class Message implements ServiceManagerAwareInterface {
      *
      * @return \Zend\View\Renderer\RendererInterface
      */
-    protected function getRenderer() {
+    public function getRenderer() {
         if($this->renderer === null) {
             $serviceManager = $this->getServiceManager();
             $this->renderer = $serviceManager->get('goaliomailservice_renderer');
@@ -123,11 +123,22 @@ class Message implements ServiceManagerAwareInterface {
     }
 
     /**
+     * @param \Zend\View\Renderer\RendererInterface $renderer
+     *
+     * @return $this
+     */
+    public function setRenderer($renderer) {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**
      * Get the transport
      *
      * @return \Zend\Mail\Transport\TransportInterface
      */
-    protected function getTransport() {
+    public function getTransport() {
         if($this->transport === null) {
             $this->transport = $this->getServiceManager()
                 ->get('goaliomailservice_transport');
@@ -137,8 +148,24 @@ class Message implements ServiceManagerAwareInterface {
     }
 
     /**
+     * @param \Zend\Mail\Transport\TransportInterface $transport
      *
-     * @return Message
+     * @return $this
+     */
+    public function setTransport($transport) {
+        $this->transport = $transport;
+
+        return $this;
+    }
+
+    /**
+     * @param $from
+     * @param $encoding
+     * @param $to
+     * @param $subject
+     * @param $body
+     *
+     * @return MailMessage
      */
     protected function getDefaultMessage($from, $encoding, $to, $subject, $body) {
         if(is_string($from)) {

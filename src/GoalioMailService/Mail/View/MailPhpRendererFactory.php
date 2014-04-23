@@ -18,10 +18,15 @@ class MailPhpRendererFactory implements FactoryInterface {
         $renderer->setHelperPluginManager($helperManager);
         $renderer->setResolver($resolver);
 
-        $model = $serviceLocator->get('Application')->getMvcEvent()->getViewModel();
+        $application = $serviceLocator->get('Application');
+        $event       = $application->getMvcEvent();
 
-        $modelHelper = $renderer->plugin('view_model');
-        $modelHelper->setRoot($model);
+        if($event !== null) {
+            $model = $serviceLocator->get('Application')->getMvcEvent()->getViewModel();
+
+            $modelHelper = $renderer->plugin('view_model');
+            $modelHelper->setRoot($model);
+        }
 
         return $renderer;
     }

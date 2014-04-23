@@ -1,29 +1,31 @@
 <?php
 namespace GoalioMailService\Mail\Transport\Service;
 
+use GoalioMailService\Mail\Options\TransportOptions;
+use Zend\Mail\Transport\TransportInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 
 class TransportFactory implements FactoryInterface {
 
-
     public function createService(ServiceLocatorInterface $serviceLocator) {
 
-        $config = $serviceLocator->get('Config');
+        /** @var TransportOptions $options */
+        $options = $serviceLocator->get('goaliomailservice_options');
 
-        $transportOptions = (isset($config['goaliomailservice']) ? $config['goaliomailservice'] : array());
-
-        if(!isset($transportOptions['transport_class'])) {
-            throw new Exception('Transport class has to be configured');
+        if(!class_exists($options->getTransportClass())) {
+            throw new \Exception('Transport class has to be configured');
         }
 
-        $transportClass = $transportOptions['transport_class'];
-        $transport = new $transportClass();
+        $transportClass = $options->getTransportClass();
 
-        if(isset($transportOptions['options_class'])) {
-            $optionsClass = $transportOptions['options_class'];
-            $options = new $optionsClass($transportOptions['options']);
-            $transport->setOptions($options);
+        /** @var TransportInterface $transport */
+        $transport = new $transportClass;
+
+        if(class_exists($options->getOptionsClass())) {
+            $transportOptionsClass = $options->getOptionsClass();
+            $transportOptions = new $transportOptionsClass;
+            $transport->setOptions($transportOptions);
         }
 
         return $transport;
