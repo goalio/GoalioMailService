@@ -25,6 +25,7 @@ class TransportFactory implements FactoryInterface {
         if(class_exists($options->getOptionsClass())) {
             $transportOptionsClass = $options->getOptionsClass();
             $transportOptions = new $transportOptionsClass;
+            $transportOptions->setFromArray($options->getTransportOptions());
             $transport->setOptions($transportOptions);
         }
 
