@@ -73,7 +73,9 @@ class Message implements ServiceManagerAwareInterface {
         $body = new MimeMessage();
         $body->setParts(array($text, $html));
 
-        return $this->getDefaultMessage($from, 'utf-8', $to, $subject, $body);
+        $message = $this->getDefaultMessage($from, 'utf-8', $to, $subject, $body);
+	$message->getHeaders()->get('content-type')->setType(\Zend\Mime\Mime::MULTIPART_ALTERNATIVE);
+	return $message;
     }
 
     /**
