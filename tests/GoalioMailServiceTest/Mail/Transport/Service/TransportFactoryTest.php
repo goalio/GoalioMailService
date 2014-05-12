@@ -5,16 +5,18 @@ namespace GoalioMailServiceTest\Mail\Options\Service;
 use GoalioMailService\Mail\Transport\Service\TransportFactory;
 use GoalioMailServiceTest\Util\ServiceManagerFactory;
 
-class TransportFactoryTest extends \PHPUnit_Framework_TestCase {
-
-    public function testCreateViaServiceManager() {
+class TransportFactoryTest extends \PHPUnit_Framework_TestCase
+{
+    public function testCreateViaServiceManager()
+    {
         $sm = ServiceManagerFactory::getServiceManager();
         $transport = $sm->get('goaliomailservice_transport');
 
         $this->assertInstanceOf('Zend\Mail\Transport\File', $transport);
     }
 
-    public function testCreateService() {
+    public function testCreateService()
+    {
         $sm = ServiceManagerFactory::getServiceManager();
         $factory = new TransportFactory();
         $transport = $factory->createService($sm, 'goaliomailservicetransport');
@@ -25,7 +27,8 @@ class TransportFactoryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Exception
      */
-    public function testServiceThrowsExceptionWhenTransportClassNotExists() {
+    public function testServiceThrowsExceptionWhenTransportClassNotExists()
+    {
         $sm = ServiceManagerFactory::getServiceManager();
 
         $options = $sm->get('goaliomailservice_options');
