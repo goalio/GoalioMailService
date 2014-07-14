@@ -4,8 +4,8 @@ namespace GoalioMailService\Mail\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
-class TransportOptions extends AbstractOptions {
-
+class TransportOptions extends AbstractOptions
+{
     /** @var string  */
     protected $transportClass = 'Zend\Mail\Transport\File';
 
@@ -22,7 +22,8 @@ class TransportOptions extends AbstractOptions {
      *
      * @return $this
      */
-    public function setTransportOptions($transportOptions) {
+    public function setTransportOptions($transportOptions)
+    {
         $this->transportOptions = $transportOptions;
 
         return $this;
@@ -31,7 +32,8 @@ class TransportOptions extends AbstractOptions {
     /**
      * @return array
      */
-    public function getTransportOptions() {
+    public function getTransportOptions()
+    {
         return $this->transportOptions;
     }
 
@@ -40,7 +42,8 @@ class TransportOptions extends AbstractOptions {
      *
      * @return $this
      */
-    public function setOptionsClass($optionsClass) {
+    public function setOptionsClass($optionsClass)
+    {
         $this->optionsClass = $optionsClass;
 
         return $this;
@@ -49,7 +52,8 @@ class TransportOptions extends AbstractOptions {
     /**
      * @return string
      */
-    public function getOptionsClass() {
+    public function getOptionsClass()
+    {
         return $this->optionsClass;
     }
 
@@ -58,7 +62,8 @@ class TransportOptions extends AbstractOptions {
      *
      * @return $this
      */
-    public function setTransportClass($transportClass) {
+    public function setTransportClass($transportClass)
+    {
         $this->transportClass = $transportClass;
 
         return $this;
@@ -67,7 +72,8 @@ class TransportOptions extends AbstractOptions {
     /**
      * @return string
      */
-    public function getTransportClass() {
+    public function getTransportClass()
+    {
         return $this->transportClass;
     }
 
