@@ -1,7 +1,7 @@
 GoalioMailService
 ================
 
-Version 1.0.0 Created by the goalio UG (haftungsbeschränkt)
+Version 1.2.0 Created by the goalio UG (haftungsbeschränkt)
 
 Introduction
 ------------
