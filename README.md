@@ -83,7 +83,7 @@ SMTP Setup
 GoalioMailService uses sendmail by default, but you can set it up to use SMTP by putting your information in the config file like this:
 
     $settings = array(
-        'transport_class' => 'Zend\Mail\Transport\Smtp',
+        'type' => 'Zend\Mail\Transport\Smtp',
 
         'options_class' => 'Zend\Mail\Transport\SmtpOptions',
 
