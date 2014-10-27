@@ -1,6 +1,7 @@
 <?php
 namespace GoalioMailService\Mail\Service;
 
+use Zend\Mime\Mime;
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Mail\Message as MailMessage;
@@ -68,7 +69,8 @@ class Message implements ServiceManagerAwareInterface {
         $text->type = "text/plain";
 
         $html = new MimePart($content);
-        $html->type = "text/html";
+        $html->type = "text/html; charset=UTF-8";
+        $html->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
 
         $body = new MimeMessage();
         $body->setParts(array($text, $html));
