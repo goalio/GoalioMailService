@@ -1,7 +1,7 @@
 GoalioMailService
 ================
 
-Version 0.0.2 Created by the goalio UG (haftungsbeschränkt)
+Version 1.0.0 Created by the goalio UG (haftungsbeschränkt)
 
 Introduction
 ------------
@@ -11,12 +11,17 @@ Provide configurable Mail Transport Factory  and simple messaging for ZF2
 Requirements
 ------------
 
-* [Zend Framework 2](https://github.com/zendframework/zf2) (latest master).
+* [Zend Framework 2](https://github.com/zendframework/zf2) (> 2.3.3).
 
 Features / Goals
 ----------------
 
 * Configure transport service for using Zend\Mail [COMPLETE]
+
+Changelog
+---------
+With ZF2.3 the Transport Factory changed. This made changes to the configuration in the goaliomailservice.global.php (and goaliomailservice.local.php) neccessary.
+I tried to check this in my own factory, but please be aware of this.
 
 Installation
 ------------

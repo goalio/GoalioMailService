@@ -12,11 +12,9 @@ $settings = array(
      *
      * Name of Zend Transport Class to use
      */
-    'transport_class' => 'Zend\Mail\Transport\File',
+    'type' => 'Zend\Mail\Transport\File',
 
-    'options_class' => 'Zend\Mail\Transport\FileOptions',
-
-    'transport_options' => array(
+    'options' => array(
 	    'path'              => 'data/mail/',
 	),
 
