@@ -12,9 +12,11 @@ $settings = array(
      *
      * Name of Zend Transport Class to use
      */
-    'type' => 'Zend\Mail\Transport\Sendmail',
+    'transport_class' => 'Zend\Mail\Transport\Sendmail',
 
-    'options' => array(),
+    'options_class' => null,
+
+    'transport_options' => array(),
 
     /**
      * End of GoalioMailService configuration
