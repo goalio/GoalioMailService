@@ -21,7 +21,7 @@ class Factory extends \Zend\Mail\Transport\Factory implements AbstractFactoryInt
     /**
      * Create service with name
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface|TransportManager $serviceLocator
      * @param $name
      * @param $requestedName
      * @return mixed

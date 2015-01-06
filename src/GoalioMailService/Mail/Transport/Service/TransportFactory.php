@@ -1,6 +1,7 @@
 <?php
 namespace GoalioMailService\Mail\Transport\Service;
 
+use Zend\Config\Config;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 
@@ -8,7 +9,7 @@ class TransportFactory implements FactoryInterface {
 
     public function createService(ServiceLocatorInterface $serviceLocator) {
 
-        /** @var TransportOptions $options */
+        /** @var Config $config */
         $config = $serviceLocator->get('config');
         $options = $config['goaliomailservice'];
 
