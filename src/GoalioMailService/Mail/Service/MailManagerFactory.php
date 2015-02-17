@@ -1,26 +1,30 @@
 <?php
 namespace GoalioMailService\Mail\Service;
 
-use GoalioMailService\Mail\Mailer;
+use GoalioMailService\Mail\MailManager;
 use Zend\Mail\Transport\TransportInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\View\View;
 
-class MailerFactory implements FactoryInterface {
+class MailManagerFactory implements FactoryInterface {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $mailer = new Mailer();
+        $mailManager = new MailManager();
 
         /** @var TransportInterface $transport */
         $transport = $serviceLocator->get('GoalioMailService\Transport');
-        $mailer->setTransport($transport);
+        $mailManager->setTransport($transport);
 
         /** @var View $view */
         $view = $serviceLocator->get('View');
-        $mailer->setView($view);
+        $mailManager->setView($view);
 
-        return $mailer;
+        $config = $serviceLocator->get('config');
+        $options = $config['goalio-mail'];
+        $mailManager->setOptions($options);
+
+        return $mailManager;
     }
 }

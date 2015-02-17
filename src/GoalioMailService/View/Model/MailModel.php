@@ -9,9 +9,47 @@ class MailModel extends ViewModel {
     const HTML_PART = 'html';
     const TEXT_PART = 'text';
 
+    /**
+     * @var array
+     */
     protected $inlineAttachements = array();
 
+    /**
+     * @var array
+     */
     protected $attachements = array();
+
+    /**
+     * @return array
+     */
+    public function getAttachements()
+    {
+        return $this->attachements;
+    }
+
+    /**
+     * @param array $attachements
+     */
+    public function setAttachements($attachements)
+    {
+        $this->attachements = $attachements;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInlineAttachements()
+    {
+        return $this->inlineAttachements;
+    }
+
+    /**
+     * @param array $inlineAttachements
+     */
+    public function setInlineAttachements($inlineAttachements)
+    {
+        $this->inlineAttachements = $inlineAttachements;
+    }
 
     /**
      * Add a child model for text

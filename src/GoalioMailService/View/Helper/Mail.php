@@ -1,47 +1,22 @@
 <?php
 namespace GoalioMailService\View\Helper;
 
+use GoalioMailService\View\Model\MailModel;
 use Zend\View\Helper\AbstractHelper;
+use Zend\View\Exception;
 
 class Mail extends AbstractHelper {
 
     /**
-     * @var array
+     * @var MailModel
      */
-    protected $embedded = array();
-
-    /**
-     * @var array
-     */
-    protected $attachements = array();
+    protected $mailModel;
 
     /**
      * @return $this
      */
     public function __invoke() {
         return $this;
-    }
-
-    /**
-     *
-     */
-    public function clear() {
-        $this->embedded = array();
-        $this->attachements = array();
-    }
-
-    /**
-     * @return array
-     */
-    public function getEmbedded() {
-        return $this->embedded;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAttachements() {
-        return $this->attachements;
     }
 
     /**
@@ -54,19 +29,37 @@ class Mail extends AbstractHelper {
             $filename = basename($path);
         }
 
-        $this->embedded[$filename] = $path;
+        stop();
+
         return 'cid:' . $filename;
     }
 
     /**
-     * @param $path
-     * @param null $filename
+     * @return MailModel
      */
-    public function attach($path, $filename = null) {
-        if($filename === null) {
-            $filename = basename($path);
-        }
-        $this->attachements[$filename] = $path;
+    public function getMailModel()
+    {
+        return $this->mailModel;
     }
+
+    /**
+     * @param MailModel $mailModel
+     */
+    public function setMailModel($mailModel)
+    {
+        $this->mailModel = $mailModel;
+    }
+
+//    /**
+//     * @param $path
+//     * @param null $filename
+//     */
+//    public function attach($path, $filename = null) {
+//        if($filename === null) {
+//            $filename = basename($path);
+//        }
+//        $this->attachements[$filename] = $path;
+//    }
+
 
 }

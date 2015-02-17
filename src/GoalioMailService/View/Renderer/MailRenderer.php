@@ -93,6 +93,13 @@ class MailRenderer implements RendererInterface {
             $body->addPart($part);
         }
 
+        // Attachements
+        foreach($model->getAttachements() as $filename => $content) {
+            $file = new MimePart($content);
+            $file->filename = $filename;
+            $body->addPart($file);
+        }
+
         // Files
         //TODO: Move to event
 /*        // Embedded images
