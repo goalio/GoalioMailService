@@ -38,6 +38,9 @@ return array(
         'template_map' => array(
             'mail/html'     => __DIR__ . '/../view/layout/html.phtml',
         ),
+        'strategies' => array(
+            'GoalioMailService\MailStrategy',
+        ),
     ),
 
 
