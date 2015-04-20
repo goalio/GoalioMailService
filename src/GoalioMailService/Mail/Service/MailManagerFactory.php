@@ -21,9 +21,14 @@ class MailManagerFactory implements FactoryInterface {
         $view = $serviceLocator->get('View');
         $mailManager->setView($view);
 
+        $helper = $serviceLocator->get('ViewHelperManager')->get('mail');
+        $mailManager->setViewHelper($helper);
+
         $config = $serviceLocator->get('config');
         $options = $config['goalio-mail'];
         $mailManager->setOptions($options);
+
+
 
         return $mailManager;
     }

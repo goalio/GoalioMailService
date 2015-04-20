@@ -1,6 +1,7 @@
 <?php
 namespace GoalioMailService\Mail;
 
+use GoalioMailService\View\Helper\Mail as MailViewHelper;
 use Zend\Mail\Address\AddressInterface;
 use Zend\Mail\AddressList;
 use Zend\Mail\Transport\TransportInterface;
@@ -28,6 +29,11 @@ class MailManager {
      * @var View
      */
     protected $view;
+
+    /**
+     * @var MailViewHelper
+     */
+    protected $viewHelper;
 
     /**
      * @var string
@@ -82,6 +88,22 @@ class MailManager {
     public function setView($view)
     {
         $this->view = $view;
+    }
+
+    /**
+     * @return MailViewHelper
+     */
+    public function getViewHelper()
+    {
+        return $this->viewHelper;
+    }
+
+    /**
+     * @param MailViewHelper $viewHelper
+     */
+    public function setViewHelper($viewHelper)
+    {
+        $this->viewHelper = $viewHelper;
     }
 
     /**
@@ -196,35 +218,65 @@ class MailManager {
     /**
      * @param string|ViewModel $htmlModel
      * @param string|ViewModel $textModel
-     * @param array $attachements
+     * @param array $attachments
      * @param array $values
      * @return MimeMessage
      */
-    public function createBody($htmlModel = null, $textModel = null, $attachements = array(), $values = array())
+    public function createBody($htmlModel = null, $textModel = null, $attachments = array(), $values = array())
     {
         $body = new MimeMessage();
+        $multiPartContent = new MimeMessage();
+
+        $viewHelper = $this->getViewHelper();
+        $viewHelper->resetAttachments();
 
         // HTML
         if($htmlModel) {
             $content = $this->renderHtml($htmlModel, $values);
             $part = new MimePart($content);
             $part->type = Mime::TYPE_HTML; // TODO Evaluate "text/html; charset=UTF-8";
-            $body->addPart($part);
+            $multiPartContent->addPart($part);
         }
 
         // Text
         if($textModel) {
-            $content = $this->renderHtml($htmlModel, $values);
+            $content = $this->renderText($textModel, $values);
             $part = new MimePart($content);
             $part->type = Mime::TYPE_TEXT;
-            $body->addPart($part);
+            $multiPartContent->addPart($part);
         }
 
+        // Provide HTML/Text as alternative mime part
+        if($multiPartContent->isMultiPart()) {
+            $multiPartContentMimePart = new MimePart($multiPartContent->generateMessage());
+            $multiPartContentMimePart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $multiPartContent->getMime()->boundary() . '"';
+            $body->addPart($multiPartContentMimePart);
+        }
+        else {
+            $body->addPart(current($multiPartContent->getParts()));
+        }
+
+
+        // Inline Attachments
+        foreach($viewHelper->getAttachments() as $filename => $content) {
+            $attachment = new MimePart($content);
+            $attachment->filename = $filename;
+            $attachment->type = Mime::TYPE_OCTETSTREAM;
+            $attachment->disposition = Mime::DISPOSITION_INLINE;
+            $attachment->encoding = Mime::ENCODING_BASE64;
+            $body->addPart($attachment);
+        }
+        $viewHelper->resetAttachments();
+
+
         // Attachments
-        foreach($attachements as $filename => $content) {
-            $file = new MimePart($content);
-            $file->filename = $filename;
-            $body->addPart($file);
+        foreach($attachments as $filename => $content) {
+            $attachment = new MimePart($content);
+            $attachment->filename = $filename;
+            $attachment->type = Mime::TYPE_OCTETSTREAM;
+            $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+            $attachment->encoding = Mime::ENCODING_BASE64;
+            $body->addPart($attachment);
         }
 
         return $body;
@@ -248,14 +300,19 @@ class MailManager {
             ));
         }
 
-        $layoutViewModel = new ViewModel();
-        $layoutViewModel->setTemplate($this->getHtmlLayout());
-        $layoutViewModel->addChild($nameOrModel);
+        $viewModel = $nameOrModel;
+        if($this->getHtmlLayout()) {
+            $layoutViewModel = new ViewModel();
+            $layoutViewModel->setTemplate($this->getHtmlLayout());
+            $layoutViewModel->addChild($nameOrModel);
+            $viewModel = $layoutViewModel;
+        }
 
         $response = new Response();
         $view = $this->getView();
+
         $view->setResponse($response);
-        $view->render($layoutViewModel);
+        $view->render($viewModel);
 
         return $response->getContent();
     }
@@ -279,14 +336,18 @@ class MailManager {
             ));
         }
 
-        $layoutViewModel = new ViewModel();
-        $layoutViewModel->setTemplate($this->getTextLayout());
-        $layoutViewModel->addChild($nameOrModel);
+        $viewModel = $nameOrModel;
+        if($this->getTextLayout()) {
+            $layoutViewModel = new ViewModel();
+            $layoutViewModel->setTemplate($this->getTextLayout());
+            $layoutViewModel->addChild($nameOrModel);
+            $viewModel = $layoutViewModel;
+        }
 
         $response = new Response();
         $view = $this->getView();
         $view->setResponse($response);
-        $view->render($layoutViewModel);
+        $view->render($viewModel);
 
         return $response->getContent();
     }

@@ -1,16 +1,18 @@
 <?php
 namespace GoalioMailService\View\Helper;
 
-use GoalioMailService\View\Model\MailModel;
+use Zend\Mime\Message as MimeMessage;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Exception;
+use Zend\Mime\Part as MimePart;
+use Zend\Mime\Mime;
 
 class Mail extends AbstractHelper {
 
     /**
-     * @var MailModel
+     * @var array
      */
-    protected $mailModel;
+    protected $attachments = array();
 
     /**
      * @return $this
@@ -20,34 +22,37 @@ class Mail extends AbstractHelper {
     }
 
     /**
+     * @return MimeMessage
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    /**
+     *
+     */
+    public function resetAttachments()
+    {
+        $this->attachments = array();
+    }
+
+    /**
      * @param $path
      * @param null $filename
      * @return string
      */
     public function embed($path, $filename = null) {
+        $path = 'public' . $path;
+
         if($filename === null) {
             $filename = basename($path);
         }
 
-        stop();
+        $attachment = file_get_contents($path);
+        $this->attachments[$filename] = $attachment;
 
         return 'cid:' . $filename;
-    }
-
-    /**
-     * @return MailModel
-     */
-    public function getMailModel()
-    {
-        return $this->mailModel;
-    }
-
-    /**
-     * @param MailModel $mailModel
-     */
-    public function setMailModel($mailModel)
-    {
-        $this->mailModel = $mailModel;
     }
 
 //    /**
