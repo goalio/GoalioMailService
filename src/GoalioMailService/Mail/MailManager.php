@@ -247,16 +247,19 @@ class MailManager {
         }
 
         // Provide HTML/Text as alternative mime part
+        $parts = $multiPartContent->getParts();
         if($multiPartContent->isMultiPart()) {
             $multiPartContentMimePart = new MimePart($multiPartContent->generateMessage());
             $multiPartContentMimePart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $multiPartContent->getMime()->boundary() . '"';
             $body->addPart($multiPartContentMimePart);
         }
-        else {
+        else if(count($parts) === 1) {
             $body->addPart(current($multiPartContent->getParts()));
         }
-
-
+        else if(empty($parts)) {
+            // Ignore
+        }
+       
         // Inline Attachments
         foreach($viewHelper->getAttachments() as $filename => $content) {
             $attachment = new MimePart($content);
