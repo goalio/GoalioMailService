@@ -188,6 +188,9 @@ class MailManager {
      */
     public function send(MailMessage $message)
     {
+
+
+
         return $this->getTransport()->send($message);
     }
 
@@ -352,6 +355,26 @@ class MailManager {
         return $response->getContent();
     }
 
+    public function createPreview($nameOrModel, $values = array()) {
+        if(is_string($nameOrModel)) {
+            $name = $nameOrModel;
+            $nameOrModel = new ViewModel($values);
+            $nameOrModel->setTemplate($name);
+        }
+        if(!$nameOrModel instanceof ViewModel) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'nameOrModel must be a string or an instance of Zend\View\ViewModel. Given %s', get_class($nameOrModel)
+            ));
+        }
+
+        $response = new Response();
+        $view = $this->getView();
+
+        $view->setResponse($response);
+        $view->render($nameOrModel);
+
+        return $response->getContent();
+    }
 
     /**
      * Return a HTML message ready to be sent
