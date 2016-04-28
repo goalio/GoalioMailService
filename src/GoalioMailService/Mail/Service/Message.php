@@ -96,9 +96,16 @@ class Message implements ServiceManagerAwareInterface {
     public function createTextMessage($from, $to, $subject, $nameOrModel, $values = array()) {
         $renderer = $this->getRenderer();
         $content = $renderer->render($nameOrModel, $values);
+        
+        $text = new MimePart($content);
+        $text->type = "text/plain; charset=UTF-8";
+        $text->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+        
+        $body = new MimeMessage();
+        $body->addPart($text);
 
-        return $this->getDefaultMessage($from, 'utf-8', $to, $subject, $content);
-    }
+        return $this->getDefaultMessage($from, 'utf-8', $to, $subject, $body);
+    } 
 
     /**
      * Send the message
