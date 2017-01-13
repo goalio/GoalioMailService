@@ -14,7 +14,7 @@ $settings = array(
      */
     'type' => 'Zend\Mail\Transport\File',
 
-    'options' => array(
+    'transport_options' => array(
 	    'path'              => 'data/mail/',
 	),
 
