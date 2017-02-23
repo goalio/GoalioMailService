@@ -308,7 +308,7 @@ class MailManager {
 
         $viewModel = $nameOrModel;
         if($this->getHtmlLayout()) {
-            $layoutViewModel = new ViewModel();
+            $layoutViewModel = new ViewModel($viewModel->getVariables());
             $layoutViewModel->setTemplate($this->getHtmlLayout());
             $layoutViewModel->addChild($nameOrModel);
             $viewModel = $layoutViewModel;
